@@ -2,6 +2,7 @@ package com.tcc.siteculinariaapi.api.controller;
 
 import com.tcc.siteculinariaapi.api.model.Usuario;
 import com.tcc.siteculinariaapi.api.repository.UsuarioRepository;
+import com.tcc.siteculinariaapi.api.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping
     public List<Usuario> listar(){
         return usuarioRepository.findAll();
@@ -36,7 +40,8 @@ public class UsuarioController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario adicionar(@Valid @RequestBody Usuario usuario){
-        return usuarioRepository.save(usuario);
+
+        return usuarioService.salvar(usuario);
     }
 
     @PutMapping("/{usuarioId}")
@@ -47,7 +52,7 @@ public class UsuarioController {
         }
 
         usuario.setId(usuarioId);
-        usuario = usuarioRepository.save(usuario);
+        usuario = usuarioService.salvar(usuario);
         return ResponseEntity.ok(usuario);
     }
 
@@ -57,7 +62,7 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
 
-        usuarioRepository.deleteById(usuarioId);
+        usuarioService.excluir(usuarioId);
         return ResponseEntity.noContent().build();
     }
 }
