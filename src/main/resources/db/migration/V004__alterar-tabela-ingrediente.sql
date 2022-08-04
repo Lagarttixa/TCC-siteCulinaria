@@ -1,0 +1,1 @@
+alter table ingrediente rename column tipoQuantidade to tipo_quantidade;

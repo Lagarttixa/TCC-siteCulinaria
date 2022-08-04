@@ -30,4 +30,9 @@ public class UsuarioService {
     public void excluir(Long usuarioId){
         usuarioRepository.deleteById(usuarioId);
     }
+
+    public Usuario buscar(Long usuarioId){
+        return usuarioRepository.findById(usuarioId)
+                .orElseThrow(()-> new DomainException("Usuario não encontrado"));
+    }
 }
