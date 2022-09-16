@@ -1,6 +1,6 @@
 package com.tcc.siteculinariaapi.api.controller;
 
-import com.tcc.siteculinariaapi.api.model.Ingrediente;
+import com.tcc.siteculinariaapi.api.model.Ingredientes;
 import com.tcc.siteculinariaapi.api.repository.IngredienteRepository;
 import com.tcc.siteculinariaapi.api.service.IngredienteService;
 import lombok.AllArgsConstructor;
@@ -25,19 +25,19 @@ public class IngredienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Ingrediente adicionar(@Valid @RequestBody Ingrediente ingrediente){
+    public Ingredientes adicionar(@Valid @RequestBody Ingredientes ingredientes){
 
-        return ingredienteService.salvar(ingrediente);
+        return ingredienteService.salvar(ingredientes);
     }
 
     @GetMapping
-    public List<Ingrediente> listar(){
+    public List<Ingredientes> listar(){
         return ingredienteRepository.findAll();
     }
 
 
     @GetMapping("/{ingredienteId}")
-    public ResponseEntity<Ingrediente> buscarPorId(@PathVariable Long ingredienteId){
+    public ResponseEntity<Ingredientes> buscarPorId(@PathVariable Long ingredienteId){
         return ingredienteRepository.findById(ingredienteId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -54,14 +54,14 @@ public class IngredienteController {
     }
 
     @PutMapping("/{ingredienteId}")
-    public ResponseEntity<Ingrediente> atualizar(@Valid @PathVariable Long ingredienteId,
-                                                 @RequestBody Ingrediente ingrediente){
+    public ResponseEntity<Ingredientes> atualizar(@Valid @PathVariable Long ingredienteId,
+                                                  @RequestBody Ingredientes ingredientes){
         if(!ingredienteRepository.existsById(ingredienteId)){
             return ResponseEntity.notFound().build();
         }
 
-        ingrediente.setId(ingredienteId);
-        ingrediente = ingredienteService.salvar(ingrediente);
-        return ResponseEntity.ok(ingrediente);
+        ingredientes.setId(ingredienteId);
+        ingredientes = ingredienteService.salvar(ingredientes);
+        return ResponseEntity.ok(ingredientes);
     }
 }

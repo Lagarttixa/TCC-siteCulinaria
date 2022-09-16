@@ -1,6 +1,5 @@
 package com.tcc.siteculinariaapi.api.model;
 
-import com.tcc.siteculinariaapi.api.enums.TipoQuantidadeEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,22 +11,31 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Ingrediente {
+@Table(name = "INGREDIENTES")
+public class Ingredientes {
 
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_INGREDIENTE")
     private Long id;
 
+
+    @ManyToOne
+    @JoinColumn(name = "ID_RECEITA")
+    private Receitas receitas;
+
     @NotBlank
+    @Column(name = "NOME_INGREDIENTE")
     private String nome;
 
-    @NotBlank
-    private String quantidade;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_MEDIDA")
+    private Medidas medidas;
 
     @NotBlank
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_quantidade")
-    private TipoQuantidadeEnum tipoQuantidade;
+    @Column(name = "QTD_MEDIDA")
+    private String quantidadeMedida;
 
 }

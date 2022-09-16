@@ -1,10 +1,8 @@
 package com.tcc.siteculinariaapi.api.service;
 
 import com.tcc.siteculinariaapi.api.exception.DomainException;
-import com.tcc.siteculinariaapi.api.model.Receita;
-import com.tcc.siteculinariaapi.api.model.Usuario;
+import com.tcc.siteculinariaapi.api.model.Receitas;
 import com.tcc.siteculinariaapi.api.repository.ReceitaRepository;
-import com.tcc.siteculinariaapi.api.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,23 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ReceitaService {
 
-    private UsuarioService usuarioService;
     private ReceitaRepository receitaRepository;
 
+
     @Transactional
-    public Receita salvar(Receita receita){
-        Usuario usuario = usuarioService.buscar(receita.getUsuario().getId());
-
-        receita.setUsuario(usuario);
-
-        boolean nomeEmUso = receitaRepository.findByNome(receita.getNome())
+    public Receitas salvar(Receitas receitas){
+        boolean receitaEmUso = receitaRepository.findByNome(receitas.getNome())
                 .stream()
-                .anyMatch(nomeExistente -> !nomeExistente.equals(receita));
+                .anyMatch(receitaExiste -> !receitaExiste.equals(receitas));
 
-        if (nomeEmUso) {
-            throw new DomainException("Já existe uma receita com este nome");
+        if (receitaEmUso) {
+            throw new DomainException("Já existe essa receita!");
         }
 
-        return receitaRepository.save(receita);
+        return receitaRepository.save(receitas);
     }
+
+    public void excluir(Long receitaId){
+        receitaRepository.deleteById(receitaId);
+    }
+
 }
